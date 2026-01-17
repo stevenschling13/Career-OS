@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions or discussion
+        url: https://github.com/stevenschling13/Career-OS/discussions
+        about: Please use GitHub Discussions for questions or general discussion.
