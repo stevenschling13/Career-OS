@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: |
+          npm install -g npm@latest
+          # install root-level dependencies if exists
+          if [ -f package.json ]; then npm ci; fi
+          # install frontend dependencies
+          if [ -d frontend ]; then (cd frontend && npm ci); fi
+          # install backend dependencies
+          if [ -d backend ]; then (cd backend && npm ci); fi
+      - name: Run lint
+        run: |
+          if [ -f package.json ]; then npm run lint --if-present; fi
+          if [ -d frontend ]; then (cd frontend && npm run lint --if-present); fi
+          if [ -d backend ]; then (cd backend && npm run lint --if-present); fi
+      - name: Run tests
+        run: |
+          if [ -f package.json ]; then npm test --if-present; fi
+          if [ -d frontend ]; then (cd frontend && npm test --if-present); fi
+          if [ -d backend ]; then (cd backend && npm test --if-present); fi
