@@ -1,0 +1,13 @@
+{
+  "name": "career-os",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install-all": "npm install --workspaces",
+    "lint": "echo \"Add lint scripts\"",
+    "test": "echo \"Add tests\""
+  }
+}
